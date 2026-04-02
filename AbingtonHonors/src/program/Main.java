@@ -168,7 +168,7 @@ static void addCreditsEarned(int creditsEarnedID, float credits, String creditSo
     CreditsEarnedDAO.insert(creditsEarned);
 }
 
-static void addResource(int fileID, String fileName, String fileData, int viewer)
+static void addResource(int fileID, String fileName, byte[] fileData, int viewer)
 {
     Resources resources;
     resources = new Resources(fileID, fileName, fileData, viewer);
@@ -207,7 +207,7 @@ static void updateCreditsEarned(int creditsEarnedID, float credits, String credi
     StudentsDAO.updateCredit(psuID, CreditsEarnedDAO.getApprovedCredits(psuID));
 }
 
-static void updateResource(int fileID, String fileName, String fileData, int viewer)
+static void updateResource(int fileID, String fileName, byte[] fileData, int viewer)
 {
     Resources resources;
     resources = new Resources(fileID, fileName, fileData, viewer);

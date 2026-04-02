@@ -1,4 +1,3 @@
-
 package entity;
 
 /**
@@ -8,11 +7,11 @@ public class Resources
 {
     private int fileID;
     private String fileName;
-    private String fileData;
+    private byte[] fileData;
     private int viewer;
     
     //constructor requires all attribtes at creation
-    public Resources(int fileID, String fileName, String fileData, int viewer)
+    public Resources(int fileID, String fileName, byte[] fileData, int viewer)
     {
         this.fileID = fileID;
         this.fileName = fileName;
@@ -37,7 +36,7 @@ public class Resources
         return fileName;
     }
 
-    public String getFileData()
+    public byte[] getFileData()
     {
         return fileData;
     }

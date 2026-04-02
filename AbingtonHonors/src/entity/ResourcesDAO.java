@@ -45,7 +45,7 @@ public class ResourcesDAO implements DAO<Resources>
             while(result.next())
             {
                 resource = new Resources(result.getInt("fileID"), result.getString("fileName"),
-                        result.getString("fileData"), result.getInt("viewer"));
+                        result.getBytes("fileData"), result.getInt("viewer"));
             }
             //returns the data using ofNullable to handle the case where no data is returned by the query
             return Optional.ofNullable(resource);
@@ -84,7 +84,7 @@ public class ResourcesDAO implements DAO<Resources>
             while(result.next())
             {
                 resource = new Resources(result.getInt("fileID"), result.getString("fileName"),
-                        result.getString("fileData"), result.getInt("viewer"));
+                        result.getBytes("fileData"), result.getInt("viewer"));
                 resources.add(resource);
             }
             //returns the arraylist of resources
@@ -118,7 +118,7 @@ public class ResourcesDAO implements DAO<Resources>
             //sets values in the statement
             statement.setInt(1, resources.getFileID());
             statement.setString(2, resources.getFileName());
-            statement.setString(3, resources.getFileData());
+            statement.setBytes(3, resources.getFileData());
             statement.setInt(4, resources.getViewer());
 
             //inserts the row
@@ -151,7 +151,7 @@ public class ResourcesDAO implements DAO<Resources>
             
             //sets values in the statement
             statement.setString(1, resources.getFileName());
-            statement.setString(2, resources.getFileData());
+            statement.setBytes(2, resources.getFileData());
             statement.setInt(3, resources.getViewer());
             statement.setInt(4, resources.getFileID());
             
