@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Mar 24 19:51:40 EDT 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-019d-2242-dda4-00000f38d2c0 
+on database directory C:\Users\aramc\OneDrive\Documents\NetBeansProjects\AbingtonHonors\HonorsDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
+Loaded from file:/C:/Users/aramc/Downloads/derby.jar
+java.vendor=Amazon.com Inc.
+java.runtime.version=21.0.9+10-LTS
+user.dir=C:\Users\aramc\OneDrive\Documents\NetBeansProjects\AbingtonHonors
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
