@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Thu Apr 02 12:58:27 EDT 2026:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance a816c00e-019d-4f21-c8d5-00000e6a3930 
+Fri Apr 03 17:10:19 EDT 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance a816c00e-019d-552e-ba22-00000f115c40 
 on database directory C:\Users\aramc\OneDrive\Documents\VSCodeProjects\Abington-Honors-Society\HonorsDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@33909752 
 Loaded from file:/C:/Users/aramc/OneDrive/Documents/VSCodeProjects/Abington-Honors-Society/lib/derby.jar
 java.vendor=Amazon.com Inc.

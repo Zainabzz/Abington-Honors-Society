@@ -6,13 +6,15 @@ package entity;
 public class Admin
 {
     private int adminID;
+    private String adminEmail;
     private String adminPassword;
     private String adminName;
     
     //constructor requires all attributes at creation
-    public Admin(int adminID, String adminPassword, String adminName)
+    public Admin(int adminID, String adminEmail, String adminPassword, String adminName)
     {
         this.adminID = adminID;
+        this.adminEmail = adminEmail;
         this.adminPassword = adminPassword;
         this.adminName = adminName;
     }
@@ -29,6 +31,11 @@ public class Admin
         return adminID;
     }
 
+    public String getAdminEmail()
+    {
+        return adminEmail;
+    }
+
     public String getAdminPassword()
     {
         return adminPassword;
@@ -37,8 +44,6 @@ public class Admin
     public String getAdminName()
     {
         return adminName;
-    }
-    
-    
+    } 
     
 }

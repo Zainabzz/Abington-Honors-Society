@@ -48,6 +48,12 @@ public class Main
         
         printCreditsEarned();
         printStudents();
+        
+        //testing admin functions
+        removeAdmin(1);
+        addAdmin(1, "abc1234@psu.edu", "12345", "john");
+        updateAdmin(1, "abc1234@psu.edu", "12345", "jane");
+        System.out.print(getAdmin(1).getAdminEmail());
     }
     
 
@@ -153,11 +159,13 @@ public static String creditsTableString()
 
 // ================= ORIGINAL FUNCTIONS (UNCHANGED) =================
 
+
+
 //functions to add data
-static void addAdmin(int adminID, String adminPassword, String adminName)
+static void addAdmin(int adminID, String adminEmail, String adminPassword, String adminName)
 {
     Admin admin;
-    admin = new Admin(adminID, adminPassword, adminName);
+    admin = new Admin(adminID, adminEmail, adminPassword, adminName);
     AdminDAO.insert(admin);
 }
 
@@ -183,10 +191,10 @@ static void addStudent(int psuID, String firstName, String lastName, String psuE
 }
 
 //functions to update rows
-static void updateAdmin(int adminID, String adminPassword, String adminName)
+static void updateAdmin(int adminID, String adminEmail, String adminPassword, String adminName)
 {
     Admin admin;
-    admin = new Admin(adminID, adminPassword, adminName);
+    admin = new Admin(adminID, adminEmail, adminPassword, adminName);
     AdminDAO.update(admin);
 }
 
@@ -263,6 +271,12 @@ static Students getStudents(int psuID)
 {
     Optional<Students> student = StudentsDAO.get(psuID);
     return student.orElse(new Students(-1, "", "", "", "", "", "", 0));
+}
+
+static Admin getAdmin(int adminID)
+{
+    Optional<Admin> admin = AdminDAO.get(adminID);
+    return admin.orElse(new Admin(-1, "", "", ""));
 }
 
 static void printCreditsEarned()

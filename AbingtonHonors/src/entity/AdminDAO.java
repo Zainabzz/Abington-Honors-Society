@@ -34,6 +34,7 @@ public class AdminDAO implements DAO<Admin>
             {
                 Admin foundAdmin = new Admin(
                     rs.getInt("adminID"),
+                    rs.getString("adminEmail"),
                     rs.getString("adminPassword"),
                     rs.getString("adminName")
                 );
@@ -65,6 +66,7 @@ public class AdminDAO implements DAO<Admin>
             {
                 adminList.add(new Admin(
                     rs.getInt("adminID"),
+                    rs.getString("adminEmail"),
                     rs.getString("adminPassword"),
                     rs.getString("adminName")
                 ));
@@ -82,14 +84,15 @@ public class AdminDAO implements DAO<Admin>
     public void insert(Admin admin)
     {
         // inserts new admin
-        String sql = "INSERT INTO Admin (adminID, adminPassword, adminName) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Admin (adminID, adminEmail, adminPassword, adminName) VALUES (?, ?, ?, ?)";
 
         try
         {
             PreparedStatement stmt = DB.getInstance().getPreparedStatement(sql);
             stmt.setInt(1, admin.getAdminID());
-            stmt.setString(2, admin.getAdminPassword());
-            stmt.setString(3, admin.getAdminName());
+            stmt.setString(2, admin.getAdminEmail());
+            stmt.setString(3, admin.getAdminPassword());
+            stmt.setString(4, admin.getAdminName());
 
             stmt.executeUpdate();
         }
@@ -103,14 +106,15 @@ public class AdminDAO implements DAO<Admin>
     public void update(Admin admin)
     {
         // updates admin by ID
-        String sql = "UPDATE Admin SET adminPassword = ?, adminName = ? WHERE adminID = ?";
+        String sql = "UPDATE Admin SET adminEmail = ?, adminPassword = ?, adminName = ? WHERE adminID = ?";
 
         try
         {
             PreparedStatement stmt = DB.getInstance().getPreparedStatement(sql);
-            stmt.setString(1, admin.getAdminPassword());
-            stmt.setString(2, admin.getAdminName());
-            stmt.setInt(3, admin.getAdminID());
+            stmt.setString(1, admin.getAdminEmail());
+            stmt.setString(2, admin.getAdminPassword());
+            stmt.setString(3, admin.getAdminName());
+            stmt.setInt(4, admin.getAdminID());
 
             stmt.executeUpdate();
         }
