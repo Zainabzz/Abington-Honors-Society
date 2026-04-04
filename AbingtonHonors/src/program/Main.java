@@ -1,8 +1,14 @@
 package program;
 
 import entity.*;
+
+import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * @author aramc
@@ -54,6 +60,12 @@ public class Main
         addAdmin(1, "abc1234@psu.edu", "12345", "john");
         updateAdmin(1, "abc1234@psu.edu", "12345", "jane");
         System.out.print(getAdmin(1).getAdminEmail());
+
+        //testing resource functions
+        removeResources(1);
+        //replace filepaths with something on your own system to test it out
+        //addResource(1, "test", getBytes("C:/Users/aramc/Downloads/Effects-of-AI-on-Software-Development.pdf"), 0); 
+        //outputFile(1, "C:/Users/aramc/Downloads/Test.pdf");
     }
     
 
@@ -159,7 +171,18 @@ public static String creditsTableString()
 
 // ================= ORIGINAL FUNCTIONS (UNCHANGED) =================
 
-
+//helper method to get bytes of a file
+static byte[] getBytes(String path)
+{
+    try
+    {
+        return Files.readAllBytes(Paths.get(path));
+    }
+    catch(Exception e)
+    {
+        return null;
+    }
+}
 
 //functions to add data
 static void addAdmin(int adminID, String adminEmail, String adminPassword, String adminName)
@@ -277,6 +300,31 @@ static Admin getAdmin(int adminID)
 {
     Optional<Admin> admin = AdminDAO.get(adminID);
     return admin.orElse(new Admin(-1, "", "", ""));
+}
+
+static CreditsEarned getCreditsEarned(int creditsEarnedID)
+{
+    Optional<CreditsEarned> creditsEarned = CreditsEarnedDAO.get(creditsEarnedID);
+    return creditsEarned.orElse(new CreditsEarned(-1, -1, "", -1, false, ""));
+}
+
+static Resources getResources(int resourcesID)
+{
+    Optional<Resources> resources = ResourcesDAO.get(resourcesID);
+    return resources.orElse(new Resources(-1,"",null,-1));
+}
+static void outputFile(int resourcesID, String outputPath)
+{
+    try
+    {
+        FileOutputStream output = new FileOutputStream(outputPath);
+        output.write(getResources(resourcesID).getFileData());
+    }
+    catch(Exception e)
+    {
+        System.out.print(e);
+    }
+
 }
 
 static void printCreditsEarned()
