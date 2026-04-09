@@ -319,6 +319,7 @@ static void outputFile(int resourcesID, String outputPath)
     {
         FileOutputStream output = new FileOutputStream(outputPath);
         output.write(getResources(resourcesID).getFileData());
+        output.close();
     }
     catch(Exception e)
     {
