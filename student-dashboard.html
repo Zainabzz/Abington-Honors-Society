@@ -160,7 +160,7 @@
       <button class="modal-close" onclick="closeModal('logoutModal')">✕</button>
     </div>
     <div class="logout-body">
-      <p>You will be logged out and redirected to the Honors Program main page.</p>
+      <p>You will be logged out and redirected to the Resources page (main site).</p>
       <div class="logout-btns">
         <button class="btn-cancel" onclick="closeModal('logoutModal')">Stay Here</button>
         <button class="btn-confirm-logout" onclick="doLogout()">Log Out &amp; Go to Resources</button>
@@ -270,11 +270,7 @@
     <div class="card">
       <div class="card-header"><div class="card-title">Requirement Checklist</div><div class="card-icon">✅</div></div>
       <div class="req-list" id="reqList">
-        <div class="req-item"><div class="req-status missing">○</div><div class="req-label">Honors Course #1</div><div class="req-credits">3 cr</div></div>
-        <div class="req-item"><div class="req-status missing">○</div><div class="req-label">Honors Course #2</div><div class="req-credits">3 cr</div></div>
-        <div class="req-item"><div class="req-status missing">○</div><div class="req-label">Research / ACURA</div><div class="req-credits">2 cr</div></div>
-        <div class="req-item"><div class="req-status missing">○</div><div class="req-label">Honors Option / Project</div><div class="req-credits">3 cr</div></div>
-        <div class="req-item"><div class="req-status missing">○</div><div class="req-label">Additional Credit Needed</div><div class="req-credits">1 cr</div></div>
+        <div class="empty-state"><div class="empty-icon">📋</div><p>No credits logged yet. Start logging to see your requirements here.</p></div>
       </div>
     </div>
 
@@ -288,7 +284,7 @@
 <script>
   // ── Session ────────────────────────────────────────────────────────
   const session = (() => { try{ return JSON.parse(sessionStorage.getItem('honors_session')); }catch(e){return null;} })();
-  if(!session || session.role !== 'student') { window.location.href = 'index.html'; }
+  if(!session || session.role !== 'student') { window.location.href = '/revised_honors.html'; }
 
   function getInitials(first, last) {
     return ((first||'')[0]||'').toUpperCase() + ((last||'')[0]||'').toUpperCase() || '??';
@@ -327,7 +323,7 @@
   function confirmResources(e){ e.preventDefault(); openModal('logoutModal'); }
   function doLogout(){
     sessionStorage.removeItem('honors_session');
-    window.location.href = 'index.html';
+    window.location.href = '/revised_honors.html';
   }
   function scrollAnnounce(e){ e.preventDefault(); document.getElementById('announceSection').scrollIntoView({behavior:'smooth'}); }
 
