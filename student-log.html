@@ -113,7 +113,7 @@
       <button class="modal-close" onclick="document.getElementById('logoutModal').classList.remove('open')">✕</button>
     </div>
     <div class="logout-body">
-      <p>You will be logged out and redirected to the Honors Program main page.</p>
+      <p>You will be logged out and redirected to the Resources page (main site).</p>
       <div class="logout-btns">
         <button class="btn-cancel" onclick="document.getElementById('logoutModal').classList.remove('open')">Stay Here</button>
         <button class="btn-confirm-logout" onclick="doLogout()">Log Out &amp; Go to Resources</button>
@@ -290,7 +290,7 @@
 
 <script>
   const session = (() => { try{ return JSON.parse(sessionStorage.getItem('honors_session')); }catch(e){return null;} })();
-  if(!session || session.role !== 'student') { window.location.href = 'index.html'; }
+  if(!session || session.role !== 'student') { window.location.href = '/revised_honors.html'; }
 
   document.getElementById('sidebarAvatar').textContent = ((session.first||'')[0]||'').toUpperCase() + ((session.last||'')[0]||'').toUpperCase() || '??';
   document.getElementById('sidebarName').textContent   = (session.first||'') + ' ' + (session.last||'');
@@ -367,7 +367,7 @@
   }
 
   function confirmResources(e){ e.preventDefault(); document.getElementById('logoutModal').classList.add('open'); }
-  function doLogout(){ sessionStorage.removeItem('honors_session'); window.location.href='index.html'; }
+  function doLogout(){ sessionStorage.removeItem('honors_session'); window.location.href='/revised_honors.html'; }
 
   renderLog();
   renderSummary();
