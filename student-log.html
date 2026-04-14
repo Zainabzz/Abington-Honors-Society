@@ -290,7 +290,7 @@
 
 <script>
   const session = (() => { try{ return JSON.parse(sessionStorage.getItem('honors_session')); }catch(e){return null;} })();
-  if(!session || session.role !== 'student') { window.location.href = '/revised_honors.html'; }
+  if(!session || session.role !== 'student') { window.location.href = 'revised_honors.html'; }
 
   document.getElementById('sidebarAvatar').textContent = ((session.first||'')[0]||'').toUpperCase() + ((session.last||'')[0]||'').toUpperCase() || '??';
   document.getElementById('sidebarName').textContent   = (session.first||'') + ' ' + (session.last||'');
@@ -320,10 +320,26 @@
     return d;
   }
 
+  function hasRequiredFields(type){
+    const requiredByType = {
+      course: ['c-num','c-title','c-credits','c-sem','c-status','c-instructor'],
+      research: ['r-program','r-title','r-supervisor','r-dept','r-credits','r-sem','r-status','r-desc'],
+      travel: ['t-name','t-country','t-start','t-end','t-credits','t-type','t-desc'],
+      project: ['p-title','p-type','p-org','p-supervisor','p-credits','p-start','p-end','p-desc']
+    };
+    const required = requiredByType[type] || [];
+    for(const id of required){
+      const el = document.getElementById(id);
+      if(!el || !String(el.value || '').trim()) return false;
+    }
+    return true;
+  }
+
   function submitEntry() {
     const check = document.getElementById('attestCheck');
     if(!check.checked){ alert('Please check the attestation box before submitting.'); return; }
     const activeType = document.querySelector('.type-btn.selected').dataset.type;
+    if(!hasRequiredFields(activeType)){ alert('Please fill in all required fields before submitting.'); return; }
     const entry = getFormData(activeType);
     if(!entry.name.trim()){ alert('Please fill in the required fields.'); return; }
 
@@ -367,7 +383,7 @@
   }
 
   function confirmResources(e){ e.preventDefault(); document.getElementById('logoutModal').classList.add('open'); }
-  function doLogout(){ sessionStorage.removeItem('honors_session'); window.location.href='/revised_honors.html'; }
+  function doLogout(){ sessionStorage.removeItem('honors_session'); window.location.href='revised_honors.html'; }
 
   renderLog();
   renderSummary();
