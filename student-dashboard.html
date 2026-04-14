@@ -284,7 +284,7 @@
 <script>
   // ── Session ────────────────────────────────────────────────────────
   const session = (() => { try{ return JSON.parse(sessionStorage.getItem('honors_session')); }catch(e){return null;} })();
-  if(!session || session.role !== 'student') { window.location.href = '/revised_honors.html'; }
+  if(!session || session.role !== 'student') { window.location.href = 'revised_honors.html'; }
 
   function getInitials(first, last) {
     return ((first||'')[0]||'').toUpperCase() + ((last||'')[0]||'').toUpperCase() || '??';
@@ -323,7 +323,7 @@
   function confirmResources(e){ e.preventDefault(); openModal('logoutModal'); }
   function doLogout(){
     sessionStorage.removeItem('honors_session');
-    window.location.href = '/revised_honors.html';
+    window.location.href = 'revised_honors.html';
   }
   function scrollAnnounce(e){ e.preventDefault(); document.getElementById('announceSection').scrollIntoView({behavior:'smooth'}); }
 
