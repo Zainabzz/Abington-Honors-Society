@@ -365,15 +365,6 @@
 
   </div>
 
-  <!-- LOGIN CTA -->
-  <div id="login" class="login-cta">
-    <p class="section-label">Current Students</p>
-    <h2>Access Your Student Portal</h2>
-    <p>Track your honors credits, submit your academic plan, view announcements, and manage your honors journey.</p>
-    <a href="login.html" class="btn-gold">Log In to the Student Portal</a>
-    <p class="login-note">Penn State Access Account required.</p>
-  </div>
-
   <footer>
     &copy; 2025 Penn State Abington Honors Program &mdash; All rights reserved.
   </footer>
@@ -614,7 +605,7 @@
       <h3>Walk-In Hours</h3>
       <p>Walk-in hours are held Tuesdays and Thursdays, 1:00–3:00 PM in 328 Sutherland. No appointment needed during these times.</p>
     </div>
-    <button class="mock-download-btn">Open Scheduling System</button>
+    <button class="mock-download-btn" onclick="window.open('https://www.abington.psu.edu/academics/academic-support/advising-center','_blank','noopener')">Open Scheduling System</button>
   </div>
 </div>
 
@@ -763,7 +754,7 @@
       <h3>Additional Benefits</h3>
       <p>Schreyer Scholars enjoy priority course registration, access to university-wide honors events, a dedicated advising network, and recognition at graduation from both the Schreyer Honors College and Penn State Abington.</p>
     </div>
-    <button class="mock-download-btn">Visit Schreyer Honors College Website</button>
+    <button class="mock-download-btn" onclick="window.open('https://www.shc.psu.edu','_blank','noopener')">Visit Schreyer Honors College Website</button>
   </div>
 </div>
 
@@ -807,7 +798,7 @@
         <label>Password</label>
         <input type="password" id="reg-password" placeholder="Create a password"/>
       </div>
-      <div class="form-row">
+      <div class="form-row" id="reg-student-fields">
         <div class="form-group"><label>PSU ID</label><input type="text" id="reg-psuid" placeholder="12345678"/></div>
         <div class="form-group"><label>Major</label><input type="text" id="reg-major" placeholder="Computer Science"/></div>
       </div>
@@ -828,12 +819,15 @@
 
   function openLoginModal(role) {
     currentLoginRole = role;
+    const studentOnlyFields = document.getElementById('reg-student-fields');
     if (role === 'admin') {
       document.getElementById('loginTitle').textContent = 'Admin Portal';
       document.getElementById('loginSub').textContent = 'Sign in or register to access the Admin Portal';
+      studentOnlyFields.style.display = 'none';
     } else {
       document.getElementById('loginTitle').textContent = 'Student Portal';
       document.getElementById('loginSub').textContent = 'Sign in or register to access the Student Portal';
+      studentOnlyFields.style.display = 'grid';
     }
     switchLoginTab('signin');
     document.getElementById('loginModal').classList.add('open');
@@ -874,6 +868,7 @@
     const major = document.getElementById('reg-major').value.trim();
 
     if (!first || !last || !email || !pass) { alert('Please fill in all required fields.'); return; }
+    if (role === 'student' && (!psuId || !major)) { alert('Please fill in all required fields.'); return; }
 
     const users = getAllUsers();
     if (users.find(u => u.email === email)) { alert('An account with this email already exists. Please sign in.'); return; }
@@ -914,6 +909,16 @@
       window.location.href = 'student-dashboard.html';
     }
   }
+
+  // Ensure Student Portal Login works on every content page nav.
+  document.querySelectorAll('a.login-btn').forEach(btn => {
+    if (btn.textContent.trim() === 'Student Portal Login') {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        openLoginModal('student');
+      });
+    }
+  });
 </script>
 
  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"642255d447fd46dbbcd67f3ff9dbdf59","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
