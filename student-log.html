@@ -279,15 +279,18 @@
 </main>
 
 <script>
+  // --- SESSION & INITIALS ---
   const session = (() => { try{ return JSON.parse(sessionStorage.getItem('honors_session')); }catch(e){return null;} })();
   if(!session || session.role !== 'student') { window.location.href = 'index.html'; }
 
-  // FIXED: grab only the first character of first and last name
+  // Strict 2-character initials logic
   const fullName = ((session.first || '') + ' ' + (session.last || '')).trim();
-  const initials = (session.first ? session.first[0] : '') + (session.last ? session.last[0] : '');
-  document.getElementById('sidebarAvatar').textContent = initials.toUpperCase() || '??';
+  const initials = ((session.first ? session.first : '') + (session.last ? session.last : '')).toUpperCase();
+  
+  document.getElementById('sidebarAvatar').textContent = initials || '??';
   document.getElementById('sidebarName').textContent = fullName || 'Student';
 
+  // --- UI NAVIGATION ---
   function selectType(type, btn) {
     document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
@@ -295,6 +298,62 @@
     document.getElementById('form-' + type).classList.add('visible');
   }
 
+  // --- LIVE DATA FETCHING (THE FIX) ---
+  async function renderLog() {
+    const logTable = document.getElementById('logTableBody');
+    if (!logTable) return;
+
+    try {
+      const { collection, getDocs, query, where } = window.fbTools;
+      
+      // Fetch ONLY logs for this specific student email
+      const q = query(collection(window.db, "activities"), where("studentEmail", "==", session.email));
+      const querySnapshot = await getDocs(q);
+      
+      let logs = [];
+      querySnapshot.forEach((doc) => {
+        logs.push({ id: doc.id, ...doc.data() });
+      });
+
+      // Sort logs by timestamp (newest first)
+      logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      if (logs.length === 0) {
+        logTable.innerHTML = '<tr><td colspan="4" class="text-center p-4">No activities logged yet.</td></tr>';
+      } else {
+        logTable.innerHTML = logs.map(log => `
+          <tr>
+            <td>${log.name || 'Unnamed'}</td>
+            <td>${log.type.toUpperCase()}</td>
+            <td>${log.credits} cr</td>
+            <td><span class="status-tag ${log.pending ? 'status-pending' : 'status-approved'}">
+              ${log.pending ? 'Pending Review' : 'Approved'}
+            </span></td>
+          </tr>
+        `).join('');
+      }
+
+      // Update the progress summary bar with the fetched data
+      updateSummary(logs);
+
+    } catch (e) {
+      console.error("Error fetching logs:", e);
+    }
+  }
+
+  function updateSummary(logs) {
+    const approved = logs.filter(l => !l.pending).reduce((s, l) => s + (parseInt(l.credits) || 0), 0);
+    const pending = logs.filter(l => l.pending).length;
+    const remaining = Math.max(0, 12 - approved);
+    const pct = Math.min(100, (approved / 12) * 100);
+
+    document.getElementById('sumApproved').textContent = approved + ' / 12';
+    document.getElementById('sumPending').textContent  = pending + (pending === 1 ? ' entry' : ' entries');
+    document.getElementById('sumRemaining').textContent = remaining + ' credits';
+    document.getElementById('miniBar').style.width      = pct + '%';
+  }
+
+  // --- SUBMISSION LOGIC ---
   function getFormData(type){
     const d = {
       type,
@@ -310,32 +369,36 @@
     return d;
   }
 
-  function confirmResources(e){ 
-    e.preventDefault(); 
-    document.getElementById('logoutModal').classList.add('open'); 
-  }
-  
-  function doLogout() {
-    sessionStorage.removeItem('honors_session');
-    window.location.href = 'index.html';
-  }
-
   async function submitEntry() {
     const check = document.getElementById('attestCheck');
     if(!check.checked){ alert('Please check the attestation box before submitting.'); return; }
     
-    const activeType = document.querySelector('.type-btn.selected').dataset.type;
+    const activeBtn = document.querySelector('.type-btn.selected');
+    if(!activeBtn) { alert('Please select an activity type.'); return; }
+    
+    const activeType = activeBtn.dataset.type;
     const entry = getFormData(activeType);
 
-    if(!entry.name){ alert('Please fill in the required fields.'); return; }
+    if(!entry.name || !entry.credits){ alert('Please fill in the required fields.'); return; }
 
     try {
       const { collection, addDoc } = window.fbTools;
       await addDoc(collection(window.db, "activities"), entry);
       alert('Submitted for review!');
-      location.reload();
+      // Reload will trigger renderLog() again to show the new "Pending" entry
+      location.reload(); 
     } catch (e) { console.error(e); alert("Submission error. Please try again."); }
   }
+
+  // --- LOGOUT ---
+  function confirmResources(e){ e.preventDefault(); document.getElementById('logoutModal').classList.add('open'); }
+  function doLogout() {
+    sessionStorage.removeItem('honors_session');
+    window.location.href = 'index.html';
+  }
+
+  // Start the fetch when the page is ready
+  setTimeout(renderLog, 1000);
 </script>
 
 <script type="module">
