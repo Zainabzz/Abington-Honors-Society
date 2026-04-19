@@ -284,7 +284,7 @@
 <script>
   // ── Session ────────────────────────────────────────────────────────
   const session = (() => { try{ return JSON.parse(sessionStorage.getItem('honors_session')); }catch(e){return null;} })();
-  if(!session || session.role !== 'student') { window.location.href = 'revised_honors.html'; }
+  if(!session || session.role !== 'student') { window.location.href = '/revised_honors.html'; }
 
   function getInitials(first, last) {
     return ((first||'')[0]||'').toUpperCase() + ((last||'')[0]||'').toUpperCase() || '??';
@@ -321,10 +321,17 @@
 
   // ── Resources navigation (logout warning) ─────────────────────────
   function confirmResources(e){ e.preventDefault(); openModal('logoutModal'); }
-  function doLogout(){
-    sessionStorage.removeItem('honors_session');
-    window.location.href = 'revised_honors.html';
-  }
+
+  // --- UPDATED LOGOUT FUNCTION ---
+function doLogout() {
+  sessionStorage.removeItem('honors_session');
+  window.location.href = 'revised_honors.html';
+}
+
+function confirmResources(e) {
+  e.preventDefault();
+  document.getElementById('logoutModal').classList.add('open');
+}
   function scrollAnnounce(e){ e.preventDefault(); document.getElementById('announceSection').scrollIntoView({behavior:'smooth'}); }
 
   // ── Semester data (uses logged credits from sessionStorage) ─────────
@@ -402,6 +409,32 @@
   }
 
   changeSemester('spring2026');
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  // Added query and where to the imports below
+  import { 
+    getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc, query, where 
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCTAKK1zUtGdYDcnJuPNKi_IEzq2UwD_aA",
+    authDomain: "honors-website.firebaseapp.com",
+    projectId: "honors-website",
+    storageBucket: "honors-website.firebasestorage.app",
+    messagingSenderId: "1039251140774",
+    appId: "1:1039251140774:web:3773126350e596f88c0467",
+    measurementId: "G-419K1PF8QQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.db = db;
+  // Added query and where to the tools window object
+  window.fbTools = { doc, setDoc, getDoc, collection, getDocs, updateDoc, query, where };
+  
+  console.log("Firebase Dashboard Tools Loaded.");
 </script>
 </body>
 </html>
