@@ -9,7 +9,6 @@
     :root{--navy:#1e2d5a;--navy-dark:#141e3d;--navy-mid:#253570;--cream:#f5f0e8;--cream-dark:#ede7d9;--white:#ffffff;--gold:#c5973a;--text-main:#1a1f36;--text-muted:#6b7280;--border:#ddd6c8;--shadow:0 4px 24px rgba(30,45,90,0.10);--shadow-lg:0 8px 40px rgba(30,45,90,0.16);--radius:14px;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-main);min-height:100vh;}
-    /* Sidebar identical to dashboard */
     .sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--navy-dark);display:flex;flex-direction:column;padding:0 0 24px 0;z-index:100;}
     .sidebar-logo{padding:28px 24px 22px;border-bottom:1px solid rgba(255,255,255,0.08);}
     .sidebar-logo .logo-mark{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--white);line-height:1.2;}
@@ -24,7 +23,6 @@
     .user-avatar{width:36px;height:36px;border-radius:50%;background:var(--navy-mid);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:0.95rem;color:var(--white);font-weight:600;flex-shrink:0;}
     .user-info .user-name{font-size:0.82rem;font-weight:500;color:var(--white);}
     .user-info .user-role{font-size:0.7rem;color:rgba(255,255,255,0.4);}
-    /* Logout modal */
     .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,15,30,0.55);z-index:200;align-items:center;justify-content:center;}
     .modal-overlay.open{display:flex;}
     .modal{background:var(--white);border-radius:18px;padding:32px;width:400px;max-width:95vw;box-shadow:0 20px 60px rgba(30,45,90,0.25);animation:modalIn 0.25s ease;}
@@ -36,14 +34,10 @@
     .logout-btns{display:flex;gap:12px;}
     .btn-cancel{padding:9px 20px;border:1.5px solid var(--border);background:var(--white);border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.875rem;color:var(--text-main);}
     .btn-confirm-logout{padding:9px 20px;background:var(--navy-dark);color:var(--white);border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.875rem;font-weight:600;}
-
-    /* MAIN */
     .main{margin-left:240px;padding:36px 40px;min-height:100vh;}
     .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
     .topbar-title{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--navy-dark);}
     .topbar-title span{color:var(--gold);}
-
-    /* TYPE SELECTOR */
     .type-selector{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;}
     .type-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 22px;border-radius:12px;cursor:pointer;border:2px solid var(--border);background:var(--white);transition:all 0.2s;min-width:110px;box-shadow:var(--shadow);}
     .type-btn:hover{border-color:var(--navy);transform:translateY(-2px);}
@@ -51,8 +45,6 @@
     .type-btn .type-icon{font-size:1.5rem;}
     .type-btn .type-label{font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);}
     .type-btn.selected .type-label{color:rgba(255,255,255,0.75);}
-
-    /* LAYOUT */
     .page-layout{display:grid;grid-template-columns:1fr 340px;gap:24px;}
     .card{background:var(--white);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);border:1px solid var(--border);}
     .card-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;color:var(--navy-dark);margin-bottom:22px;display:flex;align-items:center;gap:10px;}
@@ -77,8 +69,6 @@
     .honesty-box{background:#fef9ed;border:1.5px solid #f5d87a;border-radius:10px;padding:14px 16px;font-size:0.78rem;color:#7a5c00;margin-bottom:20px;line-height:1.55;}
     .btn-submit{width:100%;padding:13px;background:var(--navy-dark);color:var(--white);border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;margin-top:8px;transition:background 0.2s;}
     .btn-submit:hover{background:var(--navy-mid);}
-
-    /* RIGHT PANEL */
     .summary-card{background:var(--navy-dark);color:var(--white);border-radius:var(--radius);padding:22px;margin-bottom:20px;}
     .summary-title{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:14px;}
     .summary-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
@@ -179,7 +169,7 @@
         <div class="card-title"><span>📚</span> Honors Course Entry</div>
         <div class="form-row">
           <div class="field"><label>Course Number</label><input type="text" id="c-num" placeholder="e.g. ENGL 15H"/></div>
-          <div class="field"><label>Course Title</label><input type="text" id="c-title" placeholder="e.g. Rhetoric & Composition"/></div>
+          <div class="field"><label>Course Title</label><input type="text" id="c-title" placeholder="e.g. Rhetoric &amp; Composition"/></div>
         </div>
         <div class="form-row triple">
           <div class="field"><label>Credits</label><input type="number" id="c-credits" placeholder="3" min="1" max="6"/></div>
@@ -292,13 +282,11 @@
   const session = (() => { try{ return JSON.parse(sessionStorage.getItem('honors_session')); }catch(e){return null;} })();
   if(!session || session.role !== 'student') { window.location.href = 'revised_honors.html'; }
 
-  document.getElementById('sidebarAvatar').textContent = ((session.first||'')[0]||'').toUpperCase() + ((session.last||'')[0]||'').toUpperCase() || '??';
-  document.getElementById('sidebarName').textContent   = (session.first||'') + ' ' + (session.last||'');
-
-  const STORAGE_KEY = 'honors_credits_' + session.email;
-
-  function getEntries(){ try{ return JSON.parse(sessionStorage.getItem(STORAGE_KEY)||'[]'); }catch(e){ return []; } }
-  function saveEntries(arr){ sessionStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+  // FIXED: grab only the first character of first and last name
+  const fullName = ((session.first || '') + ' ' + (session.last || '')).trim();
+  const initials = (session.first ? session.first[0] : '') + (session.last ? session.last[0] : '');
+  document.getElementById('sidebarAvatar').textContent = initials.toUpperCase() || '??';
+  document.getElementById('sidebarName').textContent = fullName || 'Student';
 
   function selectType(type, btn) {
     document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
@@ -307,86 +295,69 @@
     document.getElementById('form-' + type).classList.add('visible');
   }
 
-  const labels = {course:'Honors Course', research:'Research', travel:'Study Abroad', project:'Project / Other'};
-  const badges = {course:'badge-course', research:'badge-research', travel:'badge-travel', project:'badge-project'};
-
   function getFormData(type){
-    const d = {type};
-    if(type==='course')   { d.name=document.getElementById('c-num').value||'Course'; d.sub=document.getElementById('c-title').value; d.credits=document.getElementById('c-credits').value||'0'; d.sem=document.getElementById('c-sem').value; d.status=document.getElementById('c-status').value; }
-    if(type==='research') { d.name=document.getElementById('r-title').value||'Research Project'; d.sub=document.getElementById('r-program').value; d.credits=document.getElementById('r-credits').value||'0'; d.sem=document.getElementById('r-sem').value; d.status=document.getElementById('r-status').value; }
-    if(type==='travel')   { d.name=document.getElementById('t-name').value||'Study Abroad'; d.sub=document.getElementById('t-country').value; d.credits=document.getElementById('t-credits').value||'0'; d.sem=''; d.status='Completed'; }
-    if(type==='project')  { d.name=document.getElementById('p-title').value||'Project'; d.sub=document.getElementById('p-org').value; d.credits=document.getElementById('p-credits').value||'0'; d.sem=''; d.status='In Progress'; }
-    d.pending = true;
+    const d = {
+      type,
+      studentEmail: session.email,
+      studentName: fullName,
+      pending: true,
+      timestamp: new Date().toISOString()
+    };
+    if(type==='course')    { d.name=document.getElementById('c-num').value; d.sub=document.getElementById('c-title').value; d.credits=document.getElementById('c-credits').value; }
+    if(type==='research')  { d.name=document.getElementById('r-title').value; d.sub=document.getElementById('r-program').value; d.credits=document.getElementById('r-credits').value; }
+    if(type==='travel')    { d.name=document.getElementById('t-name').value; d.sub=document.getElementById('t-country').value; d.credits=document.getElementById('t-credits').value; }
+    if(type==='project')   { d.name=document.getElementById('p-title').value; d.sub=document.getElementById('p-type').value; d.credits=document.getElementById('p-credits').value; }
     return d;
   }
 
-  function hasRequiredFields(type){
-    const requiredByType = {
-      course: ['c-num','c-title','c-credits','c-sem','c-status','c-instructor'],
-      research: ['r-program','r-title','r-supervisor','r-dept','r-credits','r-sem','r-status','r-desc'],
-      travel: ['t-name','t-country','t-start','t-end','t-credits','t-type','t-desc'],
-      project: ['p-title','p-type','p-org','p-supervisor','p-credits','p-start','p-end','p-desc']
-    };
-    const required = requiredByType[type] || [];
-    for(const id of required){
-      const el = document.getElementById(id);
-      if(!el || !String(el.value || '').trim()) return false;
-    }
-    return true;
+  function confirmResources(e){ 
+    e.preventDefault(); 
+    document.getElementById('logoutModal').classList.add('open'); 
+  }
+  
+  function doLogout() {
+    sessionStorage.removeItem('honors_session');
+    window.location.href = 'revised_honors.html';
   }
 
-  function submitEntry() {
+  async function submitEntry() {
     const check = document.getElementById('attestCheck');
     if(!check.checked){ alert('Please check the attestation box before submitting.'); return; }
+    
     const activeType = document.querySelector('.type-btn.selected').dataset.type;
-    if(!hasRequiredFields(activeType)){ alert('Please fill in all required fields before submitting.'); return; }
     const entry = getFormData(activeType);
-    if(!entry.name.trim()){ alert('Please fill in the required fields.'); return; }
 
-    const entries = getEntries();
-    entries.unshift(entry);
-    saveEntries(entries);
-    renderLog();
-    renderSummary();
-    check.checked = false;
-    alert('Entry submitted for coordinator review!');
+    if(!entry.name){ alert('Please fill in the required fields.'); return; }
+
+    try {
+      const { collection, addDoc } = window.fbTools;
+      await addDoc(collection(window.db, "activities"), entry);
+      alert('Submitted for review!');
+      location.reload();
+    } catch (e) { console.error(e); alert("Submission error. Please try again."); }
   }
+</script>
 
-  function renderLog(){
-    const entries = getEntries();
-    const list = document.getElementById('logList');
-    if(entries.length === 0){
-      list.innerHTML = '<div class="empty-log">No entries yet. Submit your first credit above!</div>';
-      return;
-    }
-    list.innerHTML = entries.map(e => `
-      <div class="log-entry">
-        <div class="log-entry-top">
-          <span class="log-entry-name">${e.name}</span>
-          <span class="log-badge ${badges[e.type]}">${labels[e.type]}</span>
-        </div>
-        <div class="log-entry-sub">${[e.sub, e.credits+' cr', e.sem].filter(Boolean).join(' · ')}</div>
-        <div class="log-entry-status"><span class="status-dot${e.pending?' ':' submitted'}"></span> ${e.pending?'Pending Review':'Approved'}</div>
-      </div>`).join('');
-  }
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { 
+    getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc, query, where, addDoc 
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  function renderSummary(){
-    const entries = getEntries();
-    const total   = entries.reduce((acc,e)=>acc+(parseInt(e.credits)||0), 0);
-    const pending = entries.filter(e=>e.pending).length;
-    const remaining = Math.max(0, 12-total);
-    const pct = Math.min(100, Math.round((total/12)*100));
-    document.getElementById('sumTotal').textContent     = total + ' / 12';
-    document.getElementById('sumPending').textContent   = pending + (pending===1?' entry':' entries');
-    document.getElementById('sumRemaining').textContent = remaining + ' credits';
-    document.getElementById('miniBar').style.width      = pct + '%';
-  }
+  const firebaseConfig = {
+    apiKey: "AIzaSyCTAKK1zUtGdYDcnJuPNKi_IEzq2UwD_aA",
+    authDomain: "honors-website.firebaseapp.com",
+    projectId: "honors-website",
+    storageBucket: "honors-website.firebasestorage.app",
+    messagingSenderId: "1039251140774",
+    appId: "1:1039251140774:web:3773126350e596f88c0467",
+    measurementId: "G-419K1PF8QQ"
+  };
 
-  function confirmResources(e){ e.preventDefault(); document.getElementById('logoutModal').classList.add('open'); }
-  function doLogout(){ sessionStorage.removeItem('honors_session'); window.location.href='revised_honors.html'; }
-
-  renderLog();
-  renderSummary();
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
+  window.fbTools = { doc, setDoc, getDoc, collection, getDocs, updateDoc, query, where, addDoc };
 </script>
 </body>
 </html>
