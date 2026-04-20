@@ -361,11 +361,6 @@ function confirmResources(e) {
     ]
   };
 
-  function getLoggedCredits() {
-    try { return JSON.parse(sessionStorage.getItem('honors_credits_' + session.email) || '[]'); }
-    catch(e){ return []; }
-  }
-
   function computeCredits(entries) {
     const breakdown = {course:0, research:0, travel:0, project:0};
     entries.forEach(e => { if(breakdown[e.type]!==undefined) breakdown[e.type] += (parseInt(e.credits)||0); });
@@ -373,30 +368,54 @@ function confirmResources(e) {
     return {total, ...breakdown};
   }
 
-  function changeSemester(val) {
-    const d = semesterData[val];
+  function applyCreditsToUI(credits, semKey) {
+    const d = semesterData[semKey];
     if(!d) return;
-
-    const credits = computeCredits(getLoggedCredits());
-    const earned  = credits.total;
+    const earned    = credits.total;
     const remaining = Math.max(0, 12 - earned);
-    const pct = Math.min(100, Math.round((earned/12)*100));
+    const pct       = Math.min(100, Math.round((earned/12)*100));
 
-    document.getElementById('statEarned').textContent         = earned;
-    document.getElementById('statRemaining').textContent      = remaining;
-    document.getElementById('statRemainingNote').textContent  = d.note;
-    document.getElementById('statSem').textContent            = d.sem;
-    document.getElementById('progressBar').style.width        = pct + '%';
-    document.getElementById('progressLabel').textContent      = earned + ' / 12 credits';
-    document.getElementById('progressPct').textContent        = pct + '% complete';
-    document.getElementById('semesterNotice').textContent     = '📅 ' + d.label;
-    document.getElementById('pbCourse').textContent           = credits.course;
-    document.getElementById('pbResearch').textContent         = credits.research;
-    document.getElementById('pbTravel').textContent           = credits.travel;
-    document.getElementById('pbProject').textContent          = credits.project;
+    document.getElementById('statEarned').textContent        = earned;
+    document.getElementById('statRemaining').textContent     = remaining;
+    document.getElementById('statRemainingNote').textContent = d.note;
+    document.getElementById('statSem').textContent           = d.sem;
+    document.getElementById('progressBar').style.width       = pct + '%';
+    document.getElementById('progressLabel').textContent     = earned + ' / 12 credits';
+    document.getElementById('progressPct').textContent       = pct + '% complete';
+    document.getElementById('semesterNotice').textContent    = '📅 ' + d.label;
+    document.getElementById('pbCourse').textContent          = credits.course;
+    document.getElementById('pbResearch').textContent        = credits.research;
+    document.getElementById('pbTravel').textContent          = credits.travel;
+    document.getElementById('pbProject').textContent         = credits.project;
 
+    // Requirement checklist
+    const reqList = document.getElementById('reqList');
+    if(earned === 0){
+      reqList.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No credits logged yet. Start logging to see your requirements here.</p></div>';
+    } else {
+      const reqs = [
+        {label:'Honors Course Credits', have: credits.course, need: 3, key:'course'},
+        {label:'Research / ACURA Credits', have: credits.research, need: 2, key:'research'},
+        {label:'Study Abroad Credits', have: credits.travel, need: 2, key:'travel'},
+        {label:'Project / Other Credits', have: credits.project, need: 2, key:'project'},
+      ];
+      reqList.innerHTML = reqs.map(r => {
+        const done = r.have >= r.need;
+        const partial = !done && r.have > 0;
+        const cls = done ? 'done' : partial ? 'pending' : 'missing';
+        const icon = done ? '✓' : partial ? '~' : '✕';
+        return `<div class="req-item">
+          <div class="req-status ${cls}">${icon}</div>
+          <div class="req-label">${r.label}</div>
+          <div class="req-credits">${r.have} / ${r.need} cr</div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  function updateAnnouncements(semKey) {
     const list = document.getElementById('announceList');
-    const anns = semAnnouncements[val] || [];
+    const anns = semAnnouncements[semKey] || [];
     if(anns.length === 0){
       list.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>No announcements for this semester.</p></div>';
     } else {
@@ -408,7 +427,45 @@ function confirmResources(e) {
     }
   }
 
-  changeSemester('spring2026');
+  // Fetch APPROVED activities from Firestore and update dashboard
+  async function loadFirebaseCredits(semKey) {
+    try {
+      const { collection, query, where, getDocs } = window.fbTools;
+      const q = query(
+        collection(window.db, "activities"),
+        where("studentEmail", "==", session.email),
+        where("pending", "==", false)   // only approved entries
+      );
+      const snap = await getDocs(q);
+      const entries = [];
+      snap.forEach(d => entries.push(d.data()));
+      const credits = computeCredits(entries);
+      applyCreditsToUI(credits, semKey);
+    } catch(e) {
+      console.error("Error loading credits from Firebase:", e);
+      // Fall back to zeroes so UI isn't blank
+      applyCreditsToUI({total:0,course:0,research:0,travel:0,project:0}, semKey);
+    }
+  }
+
+  let currentSem = 'spring2026';
+
+  function changeSemester(val) {
+    currentSem = val;
+    updateAnnouncements(val);
+    // Credits are global (not per-semester) — just re-apply with new semester label
+    loadFirebaseCredits(val);
+  }
+
+  // Wait for Firebase to be ready, then load
+  function initDashboard() {
+    if(window.fbTools && window.db) {
+      changeSemester('spring2026');
+    } else {
+      setTimeout(initDashboard, 200);
+    }
+  }
+  initDashboard();
 </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
