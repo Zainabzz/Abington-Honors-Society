@@ -280,7 +280,7 @@
 
 <script>
   const session = (() => { try{ return JSON.parse(sessionStorage.getItem('honors_session')); }catch(e){return null;} })();
-  if(!session || session.role !== 'student') { window.location.href = 'revised_honors.html'; }
+  if(!session || session.role !== 'student') { window.location.href = 'index.html'; }
 
   // FIXED: grab only the first character of first and last name
   const fullName = ((session.first || '') + ' ' + (session.last || '')).trim();
@@ -317,7 +317,7 @@
   
   function doLogout() {
     sessionStorage.removeItem('honors_session');
-    window.location.href = 'revised_honors.html';
+    window.location.href = 'index.html';
   }
 
   function updateSummary(logs) {
