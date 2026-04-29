@@ -36,33 +36,34 @@ public class Main
         initDAOs();
 
         // original demo (kept)
-        removeStudent(123456789);
-        removeCreditsEarned(1);
-        removeCreditsEarned(2);
         
-        addStudent(123456789, "John", "Doe", "jd1234@psu.edu", "12345", "Jane Doe", "jad123@psu.edu");
-        printStudents();
+       // removeStudent(123456789);
+       // removeCreditsEarned(1);
+       // removeCreditsEarned(2);
         
-        updateStudent(123456789, "John", "Doe", "jd1234@psu.edu", "12345", "addie visor", "av123@psu.edu");
-        printStudents();
+       // addStudent(123456789, "John", "Doe", "jd1234@psu.edu", "12345", "Jane Doe", "jad123@psu.edu");
+       // printStudents();
         
-        addCreditsEarned(1,1,"placeholder",123456789);
-        addCreditsEarned(2,1,"placeholder",123456789);
+       // updateStudent(123456789, "John", "Doe", "jd1234@psu.edu", "12345", "addie visor", "av123@psu.edu");
+       // printStudents();
         
-        updateCreditsEarned(1,1,"placeholder",123456789, true, "looks good");
-        updateCreditsEarned(2,1,"placeholder",123456789, true, "looks good");
+        //addCreditsEarned(1,1,"placeholder",123456789);
+       // addCreditsEarned(2,1,"placeholder",123456789);
         
-        printCreditsEarned();
-        printStudents();
+        //updateCreditsEarned(1,1,"placeholder",123456789, true, "looks good");
+       // updateCreditsEarned(2,1,"placeholder",123456789, true, "looks good");
+        
+       // printCreditsEarned();
+       // printStudents();
         
         //testing admin functions
-        removeAdmin(1);
-        addAdmin(1, "abc1234@psu.edu", "12345", "john");
-        updateAdmin(1, "abc1234@psu.edu", "12345", "jane");
-        System.out.print(getAdmin(1).getAdminEmail());
+       // removeAdmin(1);
+        //addAdmin(1, "abc1234@psu.edu", "12345", "john");
+        //updateAdmin(1, "abc1234@psu.edu", "12345", "jane");
+       // System.out.print(getAdmin(1).getAdminEmail());
 
         //testing resource functions
-        removeResources(1);
+        //removeResources(1);
         //replace filepaths with something on your own system to test it out
         //addResource(1, "test", getBytes("C:/Users/aramc/Downloads/Effects-of-AI-on-Software-Development.pdf"), 0); 
         //outputFile(1, "C:/Users/aramc/Downloads/Test.pdf");
